@@ -10,6 +10,7 @@ import google.auth
 from google.auth.transport.requests import Request
 from google.oauth2 import id_token
 
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -377,7 +378,7 @@ def register():
 def home():
     return render_template('index.html')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
     
     
