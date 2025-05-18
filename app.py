@@ -286,6 +286,23 @@ def register_new_user(email, password):
     # --------------------------------------------------------------------------------------------------------
     
   
+@app.route('/test_questions', methods=['POST'])
+def test_questions():
+    myStr = "SELECT TEST_ID, TEST_ITEM, TEST_NUMBER FROM TEST_MSTR"
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(myStr)
+            content = cur.fetchall()
+        
+            return content
+    except ValueError as e:
+        return jsonify({"error": "Error en la consulta"}), 400
+
+    finally:
+        conn.close()
+    
+
 
 
 
@@ -303,19 +320,19 @@ def login():
         if user:
             if is_google_account(myEmail):
                 print("Este Email está registrado con google")
-                return jsonify({"Error": "Este Email está registrado con google"})
+                return jsonify({"Error": "Este Email está registrado con google", "status": "2"})
             else:
                 myUserId= is_user_valid(myEmail, myPassword)
                 if myUserId != 0 :
                     print("Loggeado Exitosamente")
-                    return jsonify({"User_ID": myUserId})
+                    return jsonify({"User_ID": myUserId, "status": "1"})
                 else:
                     print("Contraseña Incorrecta")
-                    return jsonify({"Error": "Contraseña Incorrecta"})
+                    return jsonify({"Error": "Contraseña Incorrecta", "status": "2"})
                 
         else:
             print("Error: usuario no existe")
-            return jsonify({"Error": "Usuario No existe"})
+            return jsonify({"Error": "Usuario No existe", "status": "2"})
  
     except ValueError as e:
         print("error...." + str(e))
@@ -378,7 +395,7 @@ def register():
 def home():
     return render_template('index.html')
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == '__main__':
+     app.run(debug=True)
     
     
